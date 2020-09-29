@@ -48,13 +48,15 @@ void FileServer::OnClose(const std::shared_ptr<TcpConnection>& conn)
         if ((*iter)->GetConnectionPtr() == NULL)
         {
             LOG_ERROR << "connection is NULL";
-            break;
+            continue;
         }
-                          
-        //用户下线
-        m_sessions.erase(iter);
-        //bUserOffline = true;
-        LOG_INFO << "client disconnected: " << conn->peerAddress().toIpPort();
-        break;       
+		if ((*iter)->GetConnectionPtr() == conn)
+		{
+			//用户下线
+			m_sessions.erase(iter);
+			//bUserOffline = true;
+			LOG_INFO << "client disconnected: " << conn->peerAddress().toIpPort();
+			break;  
+		}
     }    
 }
